@@ -81,14 +81,22 @@ class _FeedPageState extends State<FeedPage> {
                         );
                       }
 
-                      return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: feedController.feed.length,
-                        itemBuilder: (context, index) {
-                          return _cardAvaliacao(feedController.feed[index]);
-                        },
-                      );
+                      if (feedController.feed.length > 0) {
+                        return ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: feedController.feed.length,
+                          itemBuilder: (context, index) {
+                            return _cardAvaliacao(feedController.feed[index]);
+                          },
+                        );
+                      } else {
+                        return Container(
+                          child: Center(
+                            child: Text("Nenhuma avaliação encontrada."),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ],

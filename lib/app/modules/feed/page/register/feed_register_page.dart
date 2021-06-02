@@ -68,7 +68,7 @@ class FeedRegisterPageState extends State<FeedRegisterPage> {
                     ),
                     autoValidateMode: AutovalidateMode.onUserInteraction,
                     validator: (u) => u == null ? "É necessário informar o jogo a ser avaliado. " : null,
-                    onFind: (String filter) => jogosController.getJogos(filter: filter, retornarLista: true),
+                    onFind: (String filter) => jogosController.getJogos(filtro: filter, retornarLista: true),
                     dropdownSearchDecoration: InputDecoration(
                       border: InputBorder.none,
                       filled: true,

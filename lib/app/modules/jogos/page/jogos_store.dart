@@ -14,11 +14,20 @@ abstract class _JogosStoreBase with Store {
   List<Jogo> jogos = <Jogo>[];
 
   @action
-  Future<List<Jogo>> getJogos({String filter, bool retornarLista = false}) async {
+  Future<List<Jogo>> getJogos({String filtro, bool retornarLista = false}) async {
     if (retornarLista) {
-      return await jogosRepository.getJogos(filter: filter);
+      // necessário para o plugin de combobox retornar o List
+      if (filtro != null) {
+        return await jogosRepository.getJogos(filtro: filtro);
+      } else {
+        return await jogosRepository.getJogos();
+      }
     } else {
-      jogos = await jogosRepository.getJogos(filter: filter);
+      if (filtro != null) {
+        jogos = await jogosRepository.getJogos(filtro: filtro);
+      } else {
+        jogos = await jogosRepository.getJogos();
+      }
     }
   }
 }

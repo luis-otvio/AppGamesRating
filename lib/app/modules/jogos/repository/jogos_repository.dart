@@ -9,15 +9,32 @@ import 'package:http/http.dart' as http;
 class JogosRepository {
   final appController = Modular.get<AppStore>();
 
-  Future<List<Jogo>> getJogos({String filter}) async {
+  Future<List<Jogo>> getJogos({String filtro}) async {
     try {
-      String url = appController.getUrlBase() + "/game?sort=title,ASC";
+      String url = appController.getUrlBase();
+      if (filtro != null) {
+        url += "/game/filter/game";
+      } else {
+        url += "/game?sort=title,ASC";
+      }
 
-      // if (filter != "" && filter != null) {
-      //   url += "&filter=" + filter;
-      // }
+      var resultado;
 
-      var resultado = await http.get(Uri.parse(url));
+      if (filtro != null) {
+        resultado = await http.post(
+          Uri.parse(url),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(
+            <String, String>{
+              "title": filtro,
+            },
+          ),
+        );
+      } else {
+        resultado = await http.get(Uri.parse(url));
+      }
 
       if (resultado.statusCode != 200) {
         throw Exception("Erro " + resultado.statusCode.toString() + " ao buscar jogos.");

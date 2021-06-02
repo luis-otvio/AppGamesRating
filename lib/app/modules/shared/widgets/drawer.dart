@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 Drawer myDrawer(BuildContext context) {
   return Drawer(
@@ -17,9 +18,7 @@ Drawer myDrawer(BuildContext context) {
         ListTile(
           leading: Icon(Icons.gamepad_outlined),
           title: Text('Jogos'),
-          onTap: () {
-            Navigator.pop(context);
-          },
+          onTap: () => Modular.to.pushNamed('/jogos'),
         ),
         ListTile(
           leading: Icon(Icons.bar_chart),

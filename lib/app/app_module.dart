@@ -1,3 +1,4 @@
+import 'package:app_games_rating/app/modules/jogos/page/jogos_module.dart';
 import 'package:app_games_rating/app/modules/jogos/page/jogos_store.dart';
 import 'package:app_games_rating/app/modules/jogos/repository/jogos_repository.dart';
 import 'package:app_games_rating/app/modules/feed/page/details/feed_details_module.dart';
@@ -24,5 +25,6 @@ class AppModule extends Module {
     ModuleRoute(Modular.initialRoute, module: FeedModule()),
     ModuleRoute('/feed/details', module: FeedDetailsModule()),
     ModuleRoute('/feed/register', module: FeedRegisterModule()),
+    ModuleRoute('/jogos', module: JogosModule()),
   ];
 }

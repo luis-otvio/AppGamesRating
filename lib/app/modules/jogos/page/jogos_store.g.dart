@@ -27,9 +27,9 @@ mixin _$JogosStore on _JogosStoreBase, Store {
   final _$getJogosAsyncAction = AsyncAction('_JogosStoreBase.getJogos');
 
   @override
-  Future<List<Jogo>> getJogos({String filter, bool retornarLista = false}) {
+  Future<List<Jogo>> getJogos({String filtro, bool retornarLista = false}) {
     return _$getJogosAsyncAction.run(
-        () => super.getJogos(filter: filter, retornarLista: retornarLista));
+        () => super.getJogos(filtro: filtro, retornarLista: retornarLista));
   }
 
   @override
