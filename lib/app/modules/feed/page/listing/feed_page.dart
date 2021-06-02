@@ -1,5 +1,6 @@
 import 'package:app_games_rating/app/modules/feed/model/feed_model.dart';
 import 'package:app_games_rating/app/modules/feed/page/listing/feed_store.dart';
+import 'package:app_games_rating/app/modules/shared/widgets/drawer.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/shadow_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,9 @@ class _FeedPageState extends State<FeedPage> {
           width: 220,
         ),
         centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.black),
       ),
+      drawer: myDrawer(context),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Modular.to.pushNamed('/feed/register'),
         icon: Icon(Icons.thumb_up),
