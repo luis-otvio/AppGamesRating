@@ -4,7 +4,6 @@ import 'package:app_games_rating/app/modules/shared/widgets/drawer.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/shadow_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class FeedPage extends StatefulWidget {

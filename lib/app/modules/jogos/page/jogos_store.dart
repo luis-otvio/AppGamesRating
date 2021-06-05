@@ -14,6 +14,7 @@ abstract class _JogosStoreBase with Store {
   List<Jogo> jogos = <Jogo>[];
 
   @action
+  // ignore: missing_return
   Future<List<Jogo>> getJogos({String filtro, bool retornarLista = false}) async {
     if (retornarLista) {
       // necessário para o plugin de combobox retornar o List
