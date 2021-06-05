@@ -12,7 +12,7 @@ abstract class _LoginStoreBase with Store {
   @action
   Future validarLogin(String email, String senha) async {
     try {
-      await loginRepository.login(email, senha);
+      return await loginRepository.login(email, senha);
     } catch (e) {
       throw e.toString();
     }

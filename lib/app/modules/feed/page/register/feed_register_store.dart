@@ -9,9 +9,9 @@ class FeedRegisterStore = _FeedRegisterStoreBase with _$FeedRegisterStore;
 abstract class _FeedRegisterStoreBase with Store {
   final feedRegisterRepository = Modular.get<FeedRepository>();
 
-  Future publicarAvalicao(String review, int idGame, int idUser) async {
+  Future publicarAvalicao(String review, int idGame, int idUser, String authToken) async {
     try {
-      await feedRegisterRepository.insertFeed(review, idGame, idUser);
+      await feedRegisterRepository.insertFeed(review, idGame, idUser, authToken);
     } catch (e) {
       throw e.toString();
     }

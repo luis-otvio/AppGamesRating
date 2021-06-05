@@ -25,13 +25,15 @@ class LoginRepository {
         ),
       );
 
+      String tokenAcesso = resultado.headers['authorization'];
+
       if (resultado.statusCode != 200 && resultado.statusCode != 201) {
         throw json.decode(resultado.body)['message'];
       } else {
         var usuario = Usuario();
-
         var usuarioJson = json.decode(resultado.body);
         usuario = Usuario.fromJson(usuarioJson);
+        usuario.accessToken = tokenAcesso;
 
         return usuario;
       }

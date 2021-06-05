@@ -6,8 +6,9 @@ class Usuario {
   String urlImage;
   String birthDate;
   String dateCreated;
+  String accessToken;
 
-  Usuario({this.id, this.name, this.nickName, this.email, this.urlImage, this.birthDate, this.dateCreated});
+  Usuario({this.id, this.name, this.nickName, this.email, this.urlImage, this.birthDate, this.dateCreated, this.accessToken});
 
   Usuario.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -17,6 +18,7 @@ class Usuario {
     urlImage = json['urlImage'];
     birthDate = json['birthDate'];
     dateCreated = json['dateCreated'];
+    accessToken = json['accessToken'] != null ? json['accessToken'] : "";
   }
 
   Map<String, dynamic> toJson() {
@@ -28,23 +30,7 @@ class Usuario {
     data['urlImage'] = this.urlImage;
     data['birthDate'] = this.birthDate;
     data['dateCreated'] = this.dateCreated;
+    data['accessToken'] = this.accessToken;
     return data;
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': this.id,
-      'name': this.name,
-      'nickname': this.nickName,
-      'email': this.email,
-      'urlImage': this.urlImage,
-      'birthDate': this.birthDate,
-      'dateCreated': this.dateCreated,
-    };
-  }
-
-  @override
-  String toString() {
-    return 'Usuario{id: ${this.id}, name: ${this.name}, nickName: ${this.nickName}, email: ${this.email}, urlImage: ${this.urlImage}, birthDate: ${this.birthDate}, dateCreated: ${this.dateCreated}}';
   }
 }

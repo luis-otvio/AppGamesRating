@@ -8,11 +8,16 @@ import 'package:http/http.dart' as http;
 class FeedRepository {
   final appController = Modular.get<AppStore>();
 
-  Future<List<Feed>> getFeed() async {
+  Future<List<Feed>> getFeed(String authToken) async {
     try {
       String url = appController.getUrlBase() + "/feed";
 
-      var resultado = await http.get(Uri.parse(url));
+      var resultado = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Authorization': authToken,
+        },
+      );
 
       if (resultado.statusCode != 200) {
         throw Exception("Erro " + resultado.statusCode.toString() + " ao buscar feed.");
@@ -31,7 +36,7 @@ class FeedRepository {
     }
   }
 
-  Future insertFeed(String review, int idGame, int idUser) async {
+  Future insertFeed(String review, int idGame, int idUser, String authToken) async {
     try {
       String url = appController.getUrlBase() + "/evaluation";
 
@@ -39,6 +44,7 @@ class FeedRepository {
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': authToken,
         },
         body: jsonEncode(
           <String, String>{

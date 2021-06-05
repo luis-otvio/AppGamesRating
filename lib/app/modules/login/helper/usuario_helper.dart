@@ -10,11 +10,12 @@ class UsuarioHelper {
   String nomeTabela = "usuario";
   String colId = 'id';
   String colName = 'name';
-  String colNickName = 'nickName';
+  String colNickName = 'nickname';
   String colEmail = 'email';
   String colUrlImage = 'urlImage';
   String colBirthDate = 'birthDate';
   String colDateCreated = 'dateCreated';
+  String colTokenAcesso = 'accessToken';
 
   static UsuarioHelper _databaseHelper;
   static Database _database;
@@ -46,13 +47,14 @@ class UsuarioHelper {
       '$colEmail       TEXT,'
       '$colUrlImage    TEXT,'
       '$colBirthDate   DATE,'
-      '$colDateCreated DATETIME)',
+      '$colDateCreated DATETIME,'
+      '$colTokenAcesso TEXT)',
     );
   }
 
   Future<Database> inicializarDB() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String caminho = directory.path + 'DB_GAMESRATING.bd';
+    String caminho = directory.path + 'DB_GAMESRATING.db';
 
     return await openDatabase(
       caminho,
@@ -64,6 +66,26 @@ class UsuarioHelper {
   Future<int> insertUsuario(Usuario usuario) async {
     Database db = await this.database;
 
-    return await db.insert(nomeTabela, usuario.toMap());
+    return await db.insert(nomeTabela, usuario.toJson());
+  }
+
+  Future<List<Usuario>> getUsuario() async {
+    Database db = await this.database;
+    String sql = "SELECT * FROM $nomeTabela";
+
+    List usuariosRecuperados = await db.rawQuery(sql);
+    List<Usuario> listaUsuarios = <Usuario>[];
+
+    for (var item in usuariosRecuperados) {
+      Usuario u = Usuario.fromJson(item);
+      listaUsuarios.add(u);
+    }
+
+    return listaUsuarios;
+  }
+
+  Future<void> deleteAllUsuario() async {
+    Database db = await this.database;
+    await db.rawDelete("DELETE FROM $nomeTabela");
   }
 }

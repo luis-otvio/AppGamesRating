@@ -27,8 +27,8 @@ mixin _$FeedStore on _FeedStoreBase, Store {
   final _$getFeedAsyncAction = AsyncAction('_FeedStoreBase.getFeed');
 
   @override
-  Future<dynamic> getFeed() {
-    return _$getFeedAsyncAction.run(() => super.getFeed());
+  Future<dynamic> getFeed(String authToken) {
+    return _$getFeedAsyncAction.run(() => super.getFeed(authToken));
   }
 
   @override

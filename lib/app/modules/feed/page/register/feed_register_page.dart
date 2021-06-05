@@ -1,3 +1,4 @@
+import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/feed/page/register/feed_register_store.dart';
 import 'package:app_games_rating/app/modules/jogos/model/jogo_model.dart';
 import 'package:app_games_rating/app/modules/jogos/page/jogos_store.dart';
@@ -12,6 +13,7 @@ class FeedRegisterPage extends StatefulWidget {
 }
 
 class FeedRegisterPageState extends State<FeedRegisterPage> {
+  final appController = AppStore();
   final feedRegisterController = FeedRegisterStore();
   final jogosController = JogosStore();
 
@@ -129,7 +131,14 @@ class FeedRegisterPageState extends State<FeedRegisterPage> {
                 barrierDismissible: false,
               );
 
-              await feedRegisterController.publicarAvalicao(avalicaoController.text, jogoSelecionado, 6).then((value) {
+              await feedRegisterController
+                  .publicarAvalicao(
+                avalicaoController.text,
+                jogoSelecionado,
+                appController.usuarioLogado.id,
+                appController.usuarioLogado.accessToken,
+              )
+                  .then((value) {
                 Modular.to.pop();
                 CoolAlert.show(
                   context: context,
@@ -138,7 +147,7 @@ class FeedRegisterPageState extends State<FeedRegisterPage> {
                   title: "Sucesso!",
                   text: "Avaliação cadastrada com sucesso!",
                   onConfirmBtnTap: () {
-                    Modular.to.pushReplacementNamed('/');
+                    Modular.to.pushReplacementNamed('/feed');
                   },
                 );
               }).onError((error, stackTrace) {

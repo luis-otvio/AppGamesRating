@@ -1,3 +1,4 @@
+import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/feed/model/feed_model.dart';
 import 'package:app_games_rating/app/modules/feed/page/listing/feed_store.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/drawer.dart';
@@ -12,7 +13,8 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  final feedController = FeedStore();
+  final appController = Modular.get<AppStore>();
+  final feedController = Modular.get<FeedStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class _FeedPageState extends State<FeedPage> {
                     child: Divider(),
                   ),
                   FutureBuilder(
-                    future: feedController.getFeed(),
+                    future: feedController.getFeed(appController.usuarioLogado.accessToken),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Container(
@@ -127,10 +129,9 @@ class _FeedPageState extends State<FeedPage> {
             children: [
               Container(
                 child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.redAccent,
+                  backgroundImage: NetworkImage(appController.usuarioLogado.urlImage),
+                  backgroundColor: Colors.transparent,
                   radius: 22,
-                  child: Text("L"),
                 ),
                 decoration: new BoxDecoration(
                   shape: BoxShape.circle,
@@ -152,7 +153,8 @@ class _FeedPageState extends State<FeedPage> {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Text(
-                      "Luís Otávio Pereira",
+                      appController.usuarioLogado.name,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
@@ -160,7 +162,8 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                   ),
                   Text(
-                    "luisot2104",
+                    appController.usuarioLogado.nickName,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,

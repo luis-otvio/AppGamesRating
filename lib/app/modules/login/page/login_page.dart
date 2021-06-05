@@ -206,10 +206,11 @@ class LoginPageState extends State<LoginPage> {
       );
 
       await loginController.validarLogin(_emailController.text, _senhaController.text).then((value) async {
+        await _db.deleteAllUsuario();
         int resultado = await _db.insertUsuario(value);
 
         if (resultado != null) {
-          appController.setUsuarioLogado(value);
+          await appController.setUsuarioLogado(value);
           Modular.to.pushReplacementNamed('/feed');
         } else {
           Modular.to.pop();

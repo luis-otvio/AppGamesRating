@@ -14,7 +14,7 @@ abstract class _FeedStoreBase with Store {
   List<Feed> feed = <Feed>[];
 
   @action
-  Future getFeed() async {
-    feed = await feedRepository.getFeed();
+  Future getFeed(String authToken) async {
+    feed = await feedRepository.getFeed(authToken);
   }
 }
