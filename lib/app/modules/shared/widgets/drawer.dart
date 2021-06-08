@@ -1,6 +1,7 @@
 import 'package:app_games_rating/app/app_store.dart';
-import 'package:app_games_rating/app/modules/login/helper/usuario_helper.dart';
-import 'package:app_games_rating/app/modules/login/model/usuario_model.dart';
+import 'package:app_games_rating/app/modules/usuario/helper/usuario_helper.dart';
+import 'package:app_games_rating/app/modules/usuario/model/usuario_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -38,6 +39,11 @@ Drawer myDrawer(BuildContext context) {
           title: Text('Sair'),
           onTap: () async {
             Usuario usuario = Usuario();
+            try {
+              await FirebaseAuth.instance.signOut();
+            } catch (e) {
+              print(e);
+            }
             await appController.setUsuarioLogado(usuario);
             await usuarioHelper.deleteAllUsuario();
             Modular.to.pushReplacementNamed('/');

@@ -1,5 +1,5 @@
 class Usuario {
-  int id;
+  dynamic id; // precisa ser dynamic para receber possíveis Strings do Google e Facebook
   String name;
   String nickName;
   String email;

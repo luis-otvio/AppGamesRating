@@ -1,6 +1,8 @@
 import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/login/page/login_store.dart';
-import 'package:app_games_rating/app/modules/login/helper/usuario_helper.dart';
+import 'package:app_games_rating/app/modules/usuario/helper/usuario_helper.dart';
+import 'package:app_games_rating/app/modules/usuario/model/usuario_model.dart';
+import 'package:app_games_rating/app/modules/usuario/page/usuario_store.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ class LoginPageState extends State<LoginPage> {
 
   final appController = Modular.get<AppStore>();
   final loginController = Modular.get<LoginStore>();
+  final usuarioController = Modular.get<UsuarioStore>();
 
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
@@ -120,7 +123,7 @@ class LoginPageState extends State<LoginPage> {
                           return null; // Defer to the widget's default.
                         }),
                       ),
-                      onPressed: () => _validarLogin(),
+                      onPressed: () => _login(),
                       child: Text('Entrar'),
                     ),
                   ),
@@ -164,7 +167,7 @@ class LoginPageState extends State<LoginPage> {
                     children: [
                       _socialButton('facebook.png', Color(0xFF485a96), () {}),
                       SizedBox(width: 20),
-                      _socialButton('google.jpg', Colors.white, () {}),
+                      _socialButton('google.jpg', Colors.white, () => _loginWithGoogle()),
                     ],
                   ),
                 ],
@@ -194,7 +197,7 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  _validarLogin() async {
+  _login() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
@@ -205,25 +208,49 @@ class LoginPageState extends State<LoginPage> {
         barrierDismissible: false,
       );
 
-      await loginController.validarLogin(_emailController.text, _senhaController.text).then((value) async {
-        await _db.deleteAllUsuario();
-        int resultado = await _db.insertUsuario(value);
+      await _entrar(_emailController.text, _senhaController.text);
+    }
+  }
 
-        if (resultado != null) {
-          await appController.setUsuarioLogado(value);
-          Modular.to.pushReplacementNamed('/feed');
+  _loginWithGoogle() async {
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.loading,
+      text: "Carregando...",
+      barrierDismissible: false,
+    );
+
+    await loginController.loginWithGoogle().then((value) async {
+      Usuario usuario = new Usuario();
+      usuario.id = value.user.uid;
+      usuario.name = value.user.displayName;
+      usuario.email = value.user.email;
+      usuario.dateCreated = '1998-01-01';
+      usuario.birthDate = '1998-01-01';
+      usuario.nickName = value.user.email.split("@")[0];
+      usuario.urlImage = value.user.photoURL;
+
+      // valida se já existe um usuário cadastrado com este e-mail
+      await usuarioController.verificarUsuarioCadastrado(value.user.email).then((usuarioCadastrado) async {
+        if (usuarioCadastrado) {
+          await _entrar(value.user.email, value.user.uid);
         } else {
-          Modular.to.pop();
-          CoolAlert.show(
-            context: context,
-            type: CoolAlertType.error,
-            barrierDismissible: false,
-            title: "Ops!",
-            text: "Ocorreu um erro inesperado ao tentar validar os seus dados de Login.",
-            onConfirmBtnTap: () {
-              Modular.to.pop();
-            },
-          );
+          // caso não exista, deve cadastrar um novo usuário automaticamente
+          await usuarioController.inserirUsuario(usuario, value.user.uid).then((_) async {
+            await _entrar(value.user.email, value.user.uid);
+          }).onError((error, stackTrace) {
+            Modular.to.pop();
+            CoolAlert.show(
+              context: context,
+              type: CoolAlertType.info,
+              barrierDismissible: false,
+              title: "Ops!",
+              text: error.toString(),
+              onConfirmBtnTap: () {
+                Modular.to.pop();
+              },
+            );
+          });
         }
       }).onError((error, stackTrace) {
         Modular.to.pop();
@@ -238,6 +265,44 @@ class LoginPageState extends State<LoginPage> {
           },
         );
       });
-    }
+    });
   }
+
+  _entrar(String email, String senha) async {
+    await loginController.login(email, senha).then((value) async {
+      await _db.deleteAllUsuario();
+      int resultado = await _db.insertUsuario(value);
+
+      if (resultado != null) {
+        await appController.setUsuarioLogado(value);
+        Modular.to.pushReplacementNamed('/feed');
+      } else {
+        Modular.to.pop();
+        CoolAlert.show(
+          context: context,
+          type: CoolAlertType.error,
+          barrierDismissible: false,
+          title: "Ops!",
+          text: "Ocorreu um erro inesperado ao tentar validar os seus dados de Login.",
+          onConfirmBtnTap: () {
+            Modular.to.pop();
+          },
+        );
+      }
+    }).onError((error, stackTrace) {
+      Modular.to.pop();
+      CoolAlert.show(
+        context: context,
+        type: CoolAlertType.info,
+        barrierDismissible: false,
+        title: "Ops!",
+        text: error.toString(),
+        onConfirmBtnTap: () {
+          Modular.to.pop();
+        },
+      );
+    });
+  }
+
+  _showError() {}
 }

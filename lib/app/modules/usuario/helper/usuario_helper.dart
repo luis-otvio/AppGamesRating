@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:app_games_rating/app/modules/login/model/usuario_model.dart';
 import 'dart:async';
 
+import 'package:app_games_rating/app/modules/usuario/model/usuario_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 

@@ -1,5 +1,6 @@
 import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/loading/page/loading_store.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -15,6 +16,7 @@ class LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     loadingController.verificarUsuarioLogado().then((value) async {
+      await Firebase.initializeApp();
       if (value.length > 0) {
         await appController.setUsuarioLogado(value[0]);
         Modular.to.pushReplacementNamed('/feed');

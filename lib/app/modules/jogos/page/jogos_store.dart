@@ -18,7 +18,7 @@ abstract class _JogosStoreBase with Store {
   Future<List<Jogo>> getJogos({String filtro, bool retornarLista = false}) async {
     if (retornarLista) {
       // necessário para o plugin de combobox retornar o List
-      if (filtro != null) {
+      if (filtro != null && filtro != "") {
         return await jogosRepository.getJogos(filtro: filtro);
       } else {
         return await jogosRepository.getJogos();

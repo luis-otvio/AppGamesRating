@@ -1,4 +1,5 @@
-import 'package:app_games_rating/app/modules/login/helper/usuario_helper.dart';
+import 'package:app_games_rating/app/modules/usuario/repository/usuario_repository.dart';
+import 'package:app_games_rating/app/modules/usuario/page/usuario_store.dart';
 import 'package:app_games_rating/app/modules/login/repository/login_repository.dart';
 import 'package:app_games_rating/app/modules/jogos/page/jogos_module.dart';
 import 'package:app_games_rating/app/modules/jogos/page/jogos_store.dart';
@@ -8,6 +9,7 @@ import 'package:app_games_rating/app/modules/feed/page/register/feed_register_mo
 import 'package:app_games_rating/app/modules/login/page/criar_conta/page/criar_conta_module.dart';
 import 'package:app_games_rating/app/modules/login/page/login_module.dart';
 import 'package:app_games_rating/app/modules/login/page/recuperar_senha/page/recuperar_senha_module.dart';
+import 'package:app_games_rating/app/modules/usuario/helper/usuario_helper.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'app_store.dart';
@@ -19,6 +21,8 @@ import 'modules/loading/page/loading_module.dart';
 class AppModule extends Module {
   @override
   final List<Bind> binds = [
+    Bind.lazySingleton((i) => UsuarioRepository()),
+    Bind.lazySingleton((i) => UsuarioStore()),
     Bind.lazySingleton((i) => UsuarioHelper()),
     Bind.lazySingleton((i) => LoginRepository()),
     Bind.lazySingleton((i) => JogosStore()),

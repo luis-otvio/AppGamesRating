@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "238828642864",
+    "project_id": "app-games-rating",
+    "storage_bucket": "app-games-rating.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238828642864:android:29b22c5eedb593c37183f5",
+        "android_client_info": {
+          "package_name": "br.com.luisot.gamesrating"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "238828642864-bhvhd76uj54omt252gc1r8c33jg8kjeq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.luisot.gamesrating",
+            "certificate_hash": "892720742f16ef62e0be9476f4651b8e073c5078"
+          }
+        },
+        {
+          "client_id": "238828642864-tpmc09c390uvchsc3al91evg6afsokr6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd9T0ILaukAcDmhoSHgQhCmcwOWLRBqAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "238828642864-tpmc09c390uvchsc3al91evg6afsokr6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

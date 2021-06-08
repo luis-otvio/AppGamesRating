@@ -1,4 +1,4 @@
-import 'package:app_games_rating/app/modules/login/model/usuario_model.dart';
+import 'package:app_games_rating/app/modules/usuario/model/usuario_model.dart';
 import 'package:mobx/mobx.dart';
 
 part 'app_store.g.dart';
