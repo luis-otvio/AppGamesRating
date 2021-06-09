@@ -13,9 +13,9 @@ class FeedRegisterPage extends StatefulWidget {
 }
 
 class FeedRegisterPageState extends State<FeedRegisterPage> {
-  final appController = AppStore();
-  final feedRegisterController = FeedRegisterStore();
-  final jogosController = JogosStore();
+  final appController = Modular.get<AppStore>();
+  final feedRegisterController = Modular.get<FeedRegisterStore>();
+  final jogosController = Modular.get<JogosStore>();
 
   final _formKey = GlobalKey<FormState>();
   final avalicaoController = TextEditingController();
