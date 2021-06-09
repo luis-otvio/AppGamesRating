@@ -1,4 +1,4 @@
-import 'package:app_games_rating/app/modules/perfil/perfil_Page.dart';
+import 'package:app_games_rating/app/modules/perfil/page/perfil_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class PerfilModule extends Module {

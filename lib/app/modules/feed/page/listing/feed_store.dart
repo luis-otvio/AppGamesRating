@@ -14,7 +14,12 @@ abstract class _FeedStoreBase with Store {
   List<Feed> feed = <Feed>[];
 
   @action
-  Future getFeed(String authToken) async {
-    feed = await feedRepository.getFeed(authToken);
+  // ignore: missing_return
+  Future<List<Feed>> getFeed(String authToken, {dynamic idUser}) async {
+    if (idUser != null) {
+      return await feedRepository.getFeed(authToken, idUser: idUser);
+    } else {
+      feed = await feedRepository.getFeed(authToken);
+    }
   }
 }

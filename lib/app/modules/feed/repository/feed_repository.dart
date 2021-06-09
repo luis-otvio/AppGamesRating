@@ -8,9 +8,15 @@ import 'package:http/http.dart' as http;
 class FeedRepository {
   final appController = Modular.get<AppStore>();
 
-  Future<List<Feed>> getFeed(String authToken) async {
+  Future<List<Feed>> getFeed(String authToken, {dynamic idUser}) async {
     try {
-      String url = appController.getUrlBase() + "/feed";
+      String url;
+
+      if (idUser != null) {
+        url = appController.getUrlBase() + "/evaluation/user/" + idUser.toString();
+      } else {
+        url = appController.getUrlBase() + "/feed";
+      }
 
       var resultado = await http.get(
         Uri.parse(url),

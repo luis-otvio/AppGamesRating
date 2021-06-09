@@ -1,6 +1,7 @@
 import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/feed/model/feed_model.dart';
 import 'package:app_games_rating/app/modules/feed/page/listing/feed_store.dart';
+import 'package:app_games_rating/app/modules/shared/widgets/card_avaliacao.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/drawer.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/shadow_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -88,7 +89,7 @@ class _FeedPageState extends State<FeedPage> {
                           shrinkWrap: true,
                           itemCount: feedController.feed.length,
                           itemBuilder: (context, index) {
-                            return _cardAvaliacao(feedController.feed[index]);
+                            return cardAvaliacao(feedController.feed[index], true, true);
                           },
                         );
                       } else {
@@ -188,136 +189,6 @@ class _FeedPageState extends State<FeedPage> {
               Icons.keyboard_arrow_right_rounded,
               size: 35,
               color: Colors.white,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _cardAvaliacao(Feed feed) {
-    double alturaCard = 105;
-
-    return InkWell(
-      onTap: () => Modular.to.pushNamed('/feed/details', arguments: feed),
-      child: Container(
-        margin: EdgeInsets.only(top: 7, bottom: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: <BoxShadow>[shadow()],
-        ),
-        child: Column(
-          children: [
-            Container(
-              height: alturaCard,
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                    ),
-                    child: Image.network(
-                      feed.urlImage,
-                      fit: BoxFit.cover,
-                      width: 100,
-                      height: alturaCard,
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      height: alturaCard,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                backgroundImage: NetworkImage("${feed.urlImageUser}"),
-                                radius: 14,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                feed.nickNameUser,
-                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            feed.evaluationUser,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: Icon(Icons.thumb_up_alt_outlined),
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            feed.like.toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 10),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: Icon(Icons.thumb_down_alt_outlined),
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            feed.dislike.toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Text(
-                    "Postado em " + feed.dateEvaluationCreate,
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ],
         ),
