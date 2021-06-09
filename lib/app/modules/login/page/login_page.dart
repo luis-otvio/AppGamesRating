@@ -1,6 +1,5 @@
 import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/login/page/login_store.dart';
-import 'package:app_games_rating/app/modules/usuario/helper/usuario_helper.dart';
 import 'package:app_games_rating/app/modules/usuario/model/usuario_model.dart';
 import 'package:app_games_rating/app/modules/usuario/page/usuario_store.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -15,8 +14,6 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-
-  UsuarioHelper _db = UsuarioHelper();
 
   final appController = Modular.get<AppStore>();
   final loginController = Modular.get<LoginStore>();
@@ -208,7 +205,7 @@ class LoginPageState extends State<LoginPage> {
         barrierDismissible: false,
       );
 
-      await _entrar(_emailController.text, _senhaController.text);
+      await loginController.entrar(_emailController.text, _senhaController.text, context);
     }
   }
 
@@ -233,11 +230,11 @@ class LoginPageState extends State<LoginPage> {
       // valida se já existe um usuário cadastrado com este e-mail
       await usuarioController.verificarUsuarioCadastrado(value.user.email).then((usuarioCadastrado) async {
         if (usuarioCadastrado) {
-          await _entrar(value.user.email, value.user.uid);
+          await loginController.entrar(value.user.email, value.user.uid, context);
         } else {
           // caso não exista, deve cadastrar um novo usuário automaticamente
           await usuarioController.inserirUsuario(usuario, value.user.uid).then((_) async {
-            await _entrar(value.user.email, value.user.uid);
+            await loginController.entrar(value.user.email, value.user.uid, context);
           }).onError((error, stackTrace) {
             Modular.to.pop();
             CoolAlert.show(
@@ -267,42 +264,4 @@ class LoginPageState extends State<LoginPage> {
       });
     });
   }
-
-  _entrar(String email, String senha) async {
-    await loginController.login(email, senha).then((value) async {
-      await _db.deleteAllUsuario();
-      int resultado = await _db.insertUsuario(value);
-
-      if (resultado != null) {
-        await appController.setUsuarioLogado(value);
-        Modular.to.pushReplacementNamed('/feed');
-      } else {
-        Modular.to.pop();
-        CoolAlert.show(
-          context: context,
-          type: CoolAlertType.error,
-          barrierDismissible: false,
-          title: "Ops!",
-          text: "Ocorreu um erro inesperado ao tentar validar os seus dados de Login.",
-          onConfirmBtnTap: () {
-            Modular.to.pop();
-          },
-        );
-      }
-    }).onError((error, stackTrace) {
-      Modular.to.pop();
-      CoolAlert.show(
-        context: context,
-        type: CoolAlertType.info,
-        barrierDismissible: false,
-        title: "Ops!",
-        text: error.toString(),
-        onConfirmBtnTap: () {
-          Modular.to.pop();
-        },
-      );
-    });
-  }
-
-  _showError() {}
 }

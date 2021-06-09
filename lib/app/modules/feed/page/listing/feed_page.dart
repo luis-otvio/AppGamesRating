@@ -110,84 +110,87 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Widget _cardUsuario() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFFFF879B), Color(0xFFFF5656)],
+    return GestureDetector(
+      onTap: () => Modular.to.pushNamed('/profile'),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFFF879B), Color(0xFFFF5656)],
+          ),
+          boxShadow: <BoxShadow>[shadow()],
+          borderRadius: BorderRadius.circular(30),
         ),
-        boxShadow: <BoxShadow>[shadow()],
-        borderRadius: BorderRadius.circular(30),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(appController.usuarioLogado.urlImage),
-                  backgroundColor: Colors.transparent,
-                  radius: 22,
-                ),
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: new Border.all(
-                    color: Colors.black,
-                    width: 2.0,
+        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(appController.usuarioLogado.urlImage),
+                    backgroundColor: Colors.transparent,
+                    radius: 22,
+                  ),
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: new Border.all(
+                      color: Colors.black,
+                      width: 2.0,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 7, vertical: 1),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Text(
-                      appController.usuarioLogado.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
+                SizedBox(width: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 7, vertical: 1),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Text(
+                        appController.usuarioLogado.name,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                  ),
-                  Text(
-                    appController.usuarioLogado.nickName,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                    Text(
+                      appController.usuarioLogado.nickName,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "25 publicações",
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white,
+                    Text(
+                      "25 publicações",
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Icon(
-            Icons.keyboard_arrow_right_rounded,
-            size: 35,
-            color: Colors.white,
-          ),
-        ],
+                  ],
+                ),
+              ],
+            ),
+            Icon(
+              Icons.keyboard_arrow_right_rounded,
+              size: 35,
+              color: Colors.white,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:app_games_rating/app/modules/perfil/page/perfil_module.dart';
 import 'package:app_games_rating/app/modules/usuario/repository/usuario_repository.dart';
 import 'package:app_games_rating/app/modules/usuario/page/usuario_store.dart';
 import 'package:app_games_rating/app/modules/login/repository/login_repository.dart';
@@ -42,5 +43,6 @@ class AppModule extends Module {
     ModuleRoute('/feed/details', module: FeedDetailsModule()),
     ModuleRoute('/feed/register', module: FeedRegisterModule()),
     ModuleRoute('/jogos', module: JogosModule()),
+    ModuleRoute('/profile', module: PerfilModule()),
   ];
 }

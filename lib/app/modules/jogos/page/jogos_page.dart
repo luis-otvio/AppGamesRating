@@ -97,7 +97,11 @@ class JogosPageState extends State<JogosPage> {
                             contentPadding: EdgeInsets.zero,
                             leading: CircleAvatar(backgroundImage: NetworkImage(jogo.urlImage)),
                             title: Text(jogo.title),
-                            subtitle: Text(jogo.producer),
+                            subtitle: Text(
+                              jogo.producer,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           );
                         },
                       );

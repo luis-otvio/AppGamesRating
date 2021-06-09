@@ -1,5 +1,10 @@
+import 'package:app_games_rating/app/modules/login/page/login_store.dart';
+import 'package:app_games_rating/app/modules/usuario/model/usuario_model.dart';
+import 'package:app_games_rating/app/modules/usuario/page/usuario_store.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class CriarContaPage extends StatefulWidget {
   @override
@@ -7,6 +12,9 @@ class CriarContaPage extends StatefulWidget {
 }
 
 class CriarContaPageState extends State<CriarContaPage> {
+  final loginController = Modular.get<LoginStore>();
+  final usuarioController = Modular.get<UsuarioStore>();
+
   final _formKey = GlobalKey<FormState>();
   final _nomeController = TextEditingController();
   final _nomeUsuarioController = TextEditingController();
@@ -181,7 +189,40 @@ class CriarContaPageState extends State<CriarContaPage> {
                           return null; // Defer to the widget's default.
                         }),
                       ),
-                      onPressed: null,
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+
+                          CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.loading,
+                            text: "Carregando...",
+                            barrierDismissible: false,
+                          );
+
+                          Usuario usuario = new Usuario();
+                          usuario.name = _nomeController.text;
+                          usuario.nickName = _nomeUsuarioController.text;
+                          usuario.email = _emailController.text;
+                          usuario.birthDate = dataNascimentoSelecionada.toString();
+
+                          await usuarioController.inserirUsuario(usuario, _senhaController.text).then((_) async {
+                            await loginController.entrar(_emailController.text, _senhaController.text, context);
+                          }).onError((error, stackTrace) {
+                            Modular.to.pop();
+                            CoolAlert.show(
+                              context: context,
+                              type: CoolAlertType.info,
+                              barrierDismissible: false,
+                              title: "Ops!",
+                              text: error.toString(),
+                              onConfirmBtnTap: () {
+                                Modular.to.pop();
+                              },
+                            );
+                          });
+                        }
+                      },
                       child: Text('Cadastrar'),
                     ),
                   ),

@@ -38,15 +38,40 @@ Drawer myDrawer(BuildContext context) {
           leading: Icon(Icons.exit_to_app),
           title: Text('Sair'),
           onTap: () async {
-            Usuario usuario = Usuario();
-            try {
-              await FirebaseAuth.instance.signOut();
-            } catch (e) {
-              print(e);
-            }
-            await appController.setUsuarioLogado(usuario);
-            await usuarioHelper.deleteAllUsuario();
-            Modular.to.pushReplacementNamed('/');
+            Widget noButton = TextButton(
+              child: Text("NÃO"),
+              onPressed: () => Modular.to.pop(),
+            );
+            Widget yesButton = TextButton(
+              child: Text("SIM"),
+              onPressed: () async {
+                Usuario usuario = Usuario();
+                try {
+                  await FirebaseAuth.instance.signOut();
+                } catch (e) {
+                  print(e);
+                }
+                await appController.setUsuarioLogado(usuario);
+                await usuarioHelper.deleteAllUsuario();
+                Modular.to.pushReplacementNamed('/');
+              },
+            );
+            //configura o AlertDialog
+            AlertDialog alert = AlertDialog(
+              title: Text("Aviso"),
+              content: Text("Deseja realmente sair da sua conta?"),
+              actions: [
+                noButton,
+                yesButton,
+              ],
+            );
+            //exibe o diálogo
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return alert;
+              },
+            );
           },
         ),
       ],

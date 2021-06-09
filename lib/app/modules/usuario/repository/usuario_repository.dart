@@ -51,14 +51,14 @@ class UsuarioRepository {
             "nickName": usuario.nickName,
             "email": usuario.email,
             "password": senha,
-            "birthDate": usuario.birthDate,
+            "birthDate": usuario.birthDate.split(" ")[0],
             "urlImage": usuario.urlImage
           },
         ),
       );
 
       if (resultado.statusCode != 200 && resultado.statusCode != 201) {
-        throw json.decode(resultado.body)['erro'];
+        throw json.decode(utf8.decode(resultado.bodyBytes))['erro'];
       }
     } catch (e) {
       throw e;
