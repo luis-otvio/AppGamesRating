@@ -1,7 +1,6 @@
 import 'package:app_games_rating/app/app_store.dart';
-import 'package:app_games_rating/app/modules/feed/model/feed_model.dart';
 import 'package:app_games_rating/app/modules/feed/page/listing/feed_store.dart';
-import 'package:app_games_rating/app/modules/shared/widgets/card_avaliacao.dart';
+import 'package:app_games_rating/app/modules/shared/widgets/card_avaliacao_widget.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/drawer.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/shadow_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -89,7 +88,7 @@ class _FeedPageState extends State<FeedPage> {
                           shrinkWrap: true,
                           itemCount: feedController.feed.length,
                           itemBuilder: (context, index) {
-                            return cardAvaliacao(feedController.feed[index], true, true);
+                            return CardAvaliacaoWidget(feedController.feed[index], exibirUsuario: true, exibirLikes: true);
                           },
                         );
                       } else {

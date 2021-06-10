@@ -22,4 +22,8 @@ abstract class _FeedStoreBase with Store {
       feed = await feedRepository.getFeed(authToken);
     }
   }
+
+  Future<void> likeDislikeFeed(int likeType, dynamic idUser, int idEvaluation, String authToken) async {
+    await feedRepository.likeDislikeFeed(likeType, idUser, idEvaluation, authToken);
+  }
 }

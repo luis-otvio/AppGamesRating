@@ -10,12 +10,10 @@ class FeedRepository {
 
   Future<List<Feed>> getFeed(String authToken, {dynamic idUser}) async {
     try {
-      String url;
+      String url = appController.getUrlBase() + "/feed";
 
       if (idUser != null) {
-        url = appController.getUrlBase() + "/evaluation/user/" + idUser.toString();
-      } else {
-        url = appController.getUrlBase() + "/feed";
+        url += "/user/" + idUser.toString();
       }
 
       var resultado = await http.get(
@@ -57,6 +55,33 @@ class FeedRepository {
             "review": review,
             "game": idGame.toString(),
             "user": idUser.toString(),
+          },
+        ),
+      );
+
+      if (resultado.statusCode != 200 && resultado.statusCode != 201) {
+        throw json.decode(utf8.decode(resultado.bodyBytes))['erro'];
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future likeDislikeFeed(int likeType, int idUser, int idEvaluation, String authToken) async {
+    try {
+      String url = appController.getUrlBase() + "/like";
+
+      var resultado = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': authToken,
+        },
+        body: jsonEncode(
+          <String, int>{
+            "likeDit": likeType,
+            "user": idUser,
+            "evaluation": idEvaluation,
           },
         ),
       );

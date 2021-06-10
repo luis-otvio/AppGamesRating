@@ -1,6 +1,6 @@
 import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/feed/page/listing/feed_store.dart';
-import 'package:app_games_rating/app/modules/shared/widgets/card_avaliacao.dart';
+import 'package:app_games_rating/app/modules/shared/widgets/card_avaliacao_widget.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/shadow_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +81,7 @@ class PerfilPageState extends State<PerfilPage> {
                             shrinkWrap: true,
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
-                              return cardAvaliacao(snapshot.data[index], false, false);
+                              return CardAvaliacaoWidget(snapshot.data[index], exibirUsuario: false, exibirLikes: false);
                             },
                           );
                         } else {
