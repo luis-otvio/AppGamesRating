@@ -162,7 +162,7 @@ class LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _socialButton('facebook.png', Color(0xFF485a96), () {}),
+                      _socialButton('facebook.png', Color(0xFF485a96), () => _loginWithFacebook()),
                       SizedBox(width: 20),
                       _socialButton('google.jpg', Colors.white, () => _loginWithGoogle()),
                     ],
@@ -262,6 +262,76 @@ class LoginPageState extends State<LoginPage> {
           },
         );
       });
+    });
+  }
+
+  _loginWithFacebook() async {
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.loading,
+      text: "Carregando...",
+      barrierDismissible: false,
+    );
+
+    await loginController.loginWithFacebook().then((profile) async {
+      Usuario usuario = new Usuario();
+      usuario.id = profile['id'];
+      usuario.name = profile['name'];
+      usuario.email = profile['email'];
+      usuario.nickName = profile['email'].toString().split("@")[0];
+      Map<String, dynamic>.from(profile['picture']).values.forEach((value) {
+        usuario.urlImage = value['url'];
+      });
+      usuario.birthDate = '1998-01-01';
+      usuario.dateCreated = '1998-01-01';
+
+      // valida se já existe um usuário cadastrado com este e-mail
+      await usuarioController.verificarUsuarioCadastrado(usuario.email).then((usuarioCadastrado) async {
+        if (usuarioCadastrado) {
+          await loginController.entrar(usuario.email, usuario.id, context);
+        } else {
+          // caso não exista, deve cadastrar um novo usuário automaticamente
+          await usuarioController.inserirUsuario(usuario, usuario.id).then((_) async {
+            await loginController.entrar(usuario.email, usuario.id, context);
+          }).onError((error, stackTrace) {
+            Modular.to.pop();
+            CoolAlert.show(
+              context: context,
+              type: CoolAlertType.info,
+              barrierDismissible: false,
+              title: "Ops!",
+              text: error.toString(),
+              onConfirmBtnTap: () {
+                Modular.to.pop();
+              },
+            );
+          });
+        }
+      }).onError((error, stackTrace) {
+        Modular.to.pop();
+        CoolAlert.show(
+          context: context,
+          type: CoolAlertType.info,
+          barrierDismissible: false,
+          title: "Ops!",
+          text: error.toString(),
+          onConfirmBtnTap: () {
+            Modular.to.pop();
+          },
+        );
+      });
+    }).onError((error, stackTrace) {
+      Modular.to.pop();
+      CoolAlert.show(
+        context: context,
+        type: CoolAlertType.info,
+        barrierDismissible: false,
+        title: "Ops!",
+        text: error.toString(),
+        onConfirmBtnTap: () {
+          Modular.to.pop();
+        },
+      );
     });
   }
 }

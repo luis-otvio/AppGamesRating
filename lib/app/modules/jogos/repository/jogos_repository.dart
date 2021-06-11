@@ -12,7 +12,7 @@ class JogosRepository {
   Future<List<Jogo>> getJogos({String filtro}) async {
     try {
       String url = appController.getUrlBase();
-      if (filtro != null) {
+      if (filtro != null && filtro != "") {
         url += "/game/filter/game";
       } else {
         url += "/game?sort=title,ASC";
@@ -20,7 +20,7 @@ class JogosRepository {
 
       var resultado;
 
-      if (filtro != null) {
+      if (filtro != null && filtro != "") {
         resultado = await http.post(
           Uri.parse(url),
           headers: <String, String>{

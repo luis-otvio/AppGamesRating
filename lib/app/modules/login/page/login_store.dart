@@ -30,6 +30,15 @@ abstract class _LoginStoreBase with Store {
     return await loginRepository.loginWithGoogle();
   }
 
+  @action
+  Future loginWithFacebook() async {
+    try {
+      return await loginRepository.loginWithFacebook();
+    } catch (e) {
+      throw e;
+    }
+  }
+
   entrar(String email, String senha, BuildContext context) async {
     await login(email, senha).then((value) async {
       await _db.deleteAllUsuario();
@@ -65,9 +74,4 @@ abstract class _LoginStoreBase with Store {
       );
     });
   }
-
-  // @action
-  // Future<UserCredential> loginWithFacebook() async {
-  //   return await loginRepository.loginWithFacebook();
-  // }
 }

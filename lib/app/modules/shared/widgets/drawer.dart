@@ -3,11 +3,14 @@ import 'package:app_games_rating/app/modules/usuario/helper/usuario_helper.dart'
 import 'package:app_games_rating/app/modules/usuario/model/usuario_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 Drawer myDrawer(BuildContext context) {
   UsuarioHelper usuarioHelper = UsuarioHelper();
   final appController = Modular.get<AppStore>();
+
+  final FacebookLogin facebookSignIn = new FacebookLogin();
 
   return Drawer(
     child: ListView(
@@ -51,6 +54,13 @@ Drawer myDrawer(BuildContext context) {
                 } catch (e) {
                   print(e);
                 }
+
+                try {
+                  await facebookSignIn.logOut();
+                } catch (e) {
+                  print(e);
+                }
+
                 await appController.setUsuarioLogado(usuario);
                 await usuarioHelper.deleteAllUsuario();
                 Modular.to.pushReplacementNamed('/');

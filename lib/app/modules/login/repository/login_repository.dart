@@ -7,9 +7,11 @@ import 'package:http/http.dart' as http;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class LoginRepository {
   final appController = Modular.get<AppStore>();
+  final FacebookLogin facebookSignIn = new FacebookLogin();
 
   Future<Usuario> login(String email, String senha) async {
     try {
@@ -57,10 +59,21 @@ class LoginRepository {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  // Future<UserCredential> loginWithFacebook() async {
-  //   final AccessToken result = (await FacebookAuth.instance.login()) as AccessToken;
-  //   final facebookAuthCredential = FacebookAuthProvider.credential(result.token);
+  Future loginWithFacebook() async {
+    final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
 
-  //   return await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-  // }
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        final graphResponse = await http.get(Uri.parse('https://graph.facebook.com/v2.12/me?fields=id,name,email,birthday,picture&access_token=${accessToken.token}'));
+        return json.decode(graphResponse.body);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login Cancelado');
+        break;
+      case FacebookLoginStatus.error:
+        throw result.errorMessage;
+        break;
+    }
+  }
 }
