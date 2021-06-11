@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/feed/model/feed_model.dart';
+import 'package:app_games_rating/app/modules/feed/model/like_by_user.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart' as http;
 
@@ -64,6 +65,34 @@ class FeedRepository {
       }
     } catch (e) {
       throw e;
+    }
+  }
+
+  Future<List<LikeByUser>> getLikesFromUser(int idUser, String authToken) async {
+    try {
+      String url = appController.getUrlBase() + "/like/user/" + idUser.toString();
+
+      var resultado = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Authorization': authToken,
+        },
+      );
+
+      if (resultado.statusCode != 200) {
+        throw Exception("Erro " + resultado.statusCode.toString() + " ao buscar posts curtidos ou descurtidos.");
+      } else {
+        var likesByUser = <LikeByUser>[];
+
+        var likesJson = json.decode(utf8.decode(resultado.bodyBytes));
+        for (var lJson in likesJson['content']) {
+          likesByUser.add(LikeByUser.fromJson(lJson));
+        }
+
+        return likesByUser;
+      }
+    } catch (e) {
+      throw Exception("Não foi possível comunicar com o servidor. " + e.toString());
     }
   }
 

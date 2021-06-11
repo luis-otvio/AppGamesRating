@@ -51,7 +51,7 @@ class PerfilPageState extends State<PerfilPage> {
                       child: Divider(),
                     ),
                     FutureBuilder(
-                      future: feedController.getFeed(appController.usuarioLogado.accessToken, idUser: appController.usuarioLogado.id),
+                      future: feedController.getFeed(appController.usuarioLogado.accessToken, appController.usuarioLogado.id, true),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return Container(

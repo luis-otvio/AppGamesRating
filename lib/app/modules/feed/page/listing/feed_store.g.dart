@@ -24,18 +24,45 @@ mixin _$FeedStore on _FeedStoreBase, Store {
     });
   }
 
+  final _$likedDislikedPostsAtom =
+      Atom(name: '_FeedStoreBase.likedDislikedPosts');
+
+  @override
+  List<LikeByUser> get likedDislikedPosts {
+    _$likedDislikedPostsAtom.reportRead();
+    return super.likedDislikedPosts;
+  }
+
+  @override
+  set likedDislikedPosts(List<LikeByUser> value) {
+    _$likedDislikedPostsAtom.reportWrite(value, super.likedDislikedPosts, () {
+      super.likedDislikedPosts = value;
+    });
+  }
+
   final _$getFeedAsyncAction = AsyncAction('_FeedStoreBase.getFeed');
 
   @override
-  Future<List<Feed>> getFeed(String authToken, {dynamic idUser}) {
+  Future<List<Feed>> getFeed(
+      String authToken, dynamic idUser, bool feedByUser) {
     return _$getFeedAsyncAction
-        .run(() => super.getFeed(authToken, idUser: idUser));
+        .run(() => super.getFeed(authToken, idUser, feedByUser));
+  }
+
+  final _$getLikeDislikeByUserAsyncAction =
+      AsyncAction('_FeedStoreBase.getLikeDislikeByUser');
+
+  @override
+  Future<dynamic> getLikeDislikeByUser(int idUser, String authToken) {
+    return _$getLikeDislikeByUserAsyncAction
+        .run(() => super.getLikeDislikeByUser(idUser, authToken));
   }
 
   @override
   String toString() {
     return '''
-feed: ${feed}
+feed: ${feed},
+likedDislikedPosts: ${likedDislikedPosts}
     ''';
   }
 }

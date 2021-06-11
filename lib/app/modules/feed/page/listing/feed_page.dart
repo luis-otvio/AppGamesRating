@@ -59,7 +59,7 @@ class _FeedPageState extends State<FeedPage> {
                     child: Divider(),
                   ),
                   FutureBuilder(
-                    future: feedController.getFeed(appController.usuarioLogado.accessToken),
+                    future: feedController.getFeed(appController.usuarioLogado.accessToken, appController.usuarioLogado.id, false),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Container(
@@ -88,7 +88,29 @@ class _FeedPageState extends State<FeedPage> {
                           shrinkWrap: true,
                           itemCount: feedController.feed.length,
                           itemBuilder: (context, index) {
-                            return CardAvaliacaoWidget(feedController.feed[index], exibirUsuario: true, exibirLikes: true);
+                            bool liked = false;
+                            bool disliked = false;
+
+                            // verifica se essa postagem está curtida ou descurtida
+                            for (var i = 0; i < feedController.likedDislikedPosts.length; i++) {
+                              if (feedController.feed[index].idEvaluation == feedController.likedDislikedPosts[i].idEvaluation) {
+                                if (feedController.likedDislikedPosts[i].likeDit == 1) {
+                                  liked = true;
+                                  i = feedController.likedDislikedPosts.length;
+                                } else if (feedController.likedDislikedPosts[i].likeDit == 2) {
+                                  disliked = true;
+                                  i = feedController.likedDislikedPosts.length;
+                                }
+                              }
+                            }
+
+                            return CardAvaliacaoWidget(
+                              feedController.feed[index],
+                              exibirUsuario: true,
+                              exibirLikes: true,
+                              curtido: liked,
+                              descurtido: disliked,
+                            );
                           },
                         );
                       } else {

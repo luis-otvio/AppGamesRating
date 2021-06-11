@@ -37,7 +37,7 @@ abstract class _LoginStoreBase with Store {
 
       if (resultado != null) {
         await appController.setUsuarioLogado(value);
-        Modular.to.pushNamedAndRemoveUntil('/feed', (Route<dynamic> route) => false);
+        Modular.to.pushReplacementNamed('/feed');
       } else {
         Modular.to.pop();
         CoolAlert.show(

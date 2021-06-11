@@ -13,7 +13,16 @@ class CardAvaliacaoWidget extends StatefulWidget {
   final Feed feed;
   final bool exibirUsuario;
   final bool exibirLikes;
-  CardAvaliacaoWidget(this.feed, {this.exibirUsuario = true, this.exibirLikes = true});
+  final bool curtido;
+  final bool descurtido;
+
+  CardAvaliacaoWidget(
+    this.feed, {
+    this.exibirUsuario = true,
+    this.exibirLikes = true,
+    this.curtido = false,
+    this.descurtido = false,
+  });
 
   @override
   _CardAvaliacaoWidgetState createState() => _CardAvaliacaoWidgetState();
@@ -30,8 +39,8 @@ class _CardAvaliacaoWidgetState extends State<CardAvaliacaoWidget> {
 
   @override
   void initState() {
-    _isLiked = false;
-    _isDisliked = false;
+    _isLiked = widget.curtido;
+    _isDisliked = widget.descurtido;
     super.initState();
   }
 
@@ -128,6 +137,7 @@ class _CardAvaliacaoWidgetState extends State<CardAvaliacaoWidget> {
                               visible: exibirLike,
                               child: LikeButton(
                                 key: _likeKey,
+                                isLiked: _isLiked,
                                 circleColor: CircleColor(start: Color(0xFFFF879B), end: Color(0xFFFF5656)),
                                 bubblesColor: BubblesColor(dotPrimaryColor: Color(0xFFFF879B), dotSecondaryColor: Color(0xFFFF5656)),
                                 likeBuilder: (bool isLiked) {
@@ -150,6 +160,7 @@ class _CardAvaliacaoWidgetState extends State<CardAvaliacaoWidget> {
                               visible: exibirDislike,
                               child: LikeButton(
                                 key: _dislikeKey,
+                                isLiked: _isDisliked,
                                 circleColor: CircleColor(start: Color(0xFFFF879B), end: Color(0xFFFF5656)),
                                 bubblesColor: BubblesColor(dotPrimaryColor: Color(0xFFFF879B), dotSecondaryColor: Color(0xFFFF5656)),
                                 likeBuilder: (bool isDisliked) {
