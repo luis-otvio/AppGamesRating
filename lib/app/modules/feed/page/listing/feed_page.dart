@@ -1,4 +1,5 @@
 import 'package:app_games_rating/app/app_store.dart';
+import 'package:app_games_rating/app/modules/feed/model/feed_details_model.dart';
 import 'package:app_games_rating/app/modules/feed/page/listing/feed_store.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/card_avaliacao_widget.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/drawer.dart';
@@ -6,6 +7,7 @@ import 'package:app_games_rating/app/modules/shared/widgets/shadow_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class FeedPage extends StatefulWidget {
   @override
@@ -15,6 +17,20 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   final appController = Modular.get<AppStore>();
   final feedController = Modular.get<FeedStore>();
+
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    setState(() {});
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    setState(() {});
+    _refreshController.loadComplete();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,95 +52,108 @@ class _FeedPageState extends State<FeedPage> {
         icon: Icon(Icons.thumb_up),
         label: Text("Avaliar"),
       ),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: SingleChildScrollView(
-          physics: ScrollPhysics(),
-          child: Column(
-            children: [
-              _cardUsuario(),
-              SizedBox(height: 20),
-              Column(
-                children: [
-                  Text(
-                    "Avaliações Recentes",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+      body: SmartRefresher(
+        enablePullDown: true,
+        header: WaterDropHeader(),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: SingleChildScrollView(
+            physics: ScrollPhysics(),
+            child: Column(
+              children: [
+                _cardUsuario(),
+                SizedBox(height: 20),
+                Column(
+                  children: [
+                    Text(
+                      "Avaliações Recentes",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                    width: MediaQuery.of(context).size.width / 3,
-                    child: Divider(),
-                  ),
-                  FutureBuilder(
-                    future: feedController.getFeed(appController.usuarioLogado.accessToken, appController.usuarioLogado.id, false),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Container(
-                          height: 200,
-                          width: double.infinity,
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      } else if (snapshot.hasError) {
-                        var error = snapshot.error;
+                    SizedBox(
+                      height: 20,
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Divider(),
+                    ),
+                    FutureBuilder(
+                      future: feedController.getFeed(appController.usuarioLogado.accessToken, appController.usuarioLogado.id, false),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Container(
+                            height: 200,
+                            width: double.infinity,
+                            child: Center(child: CircularProgressIndicator()),
+                          );
+                        } else if (snapshot.hasError) {
+                          var error = snapshot.error;
 
-                        CoolAlert.show(
-                          context: context,
-                          type: CoolAlertType.error,
-                          barrierDismissible: false,
-                          title: "Ops!",
-                          text: error,
-                          onConfirmBtnTap: () {
-                            Modular.to.pushReplacementNamed('/');
-                          },
-                        );
-                      }
+                          CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.error,
+                            barrierDismissible: false,
+                            title: "Ops!",
+                            text: error,
+                            onConfirmBtnTap: () {
+                              Modular.to.pushReplacementNamed('/');
+                            },
+                          );
+                        }
 
-                      if (feedController.feed.length > 0) {
-                        return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: feedController.feed.length,
-                          itemBuilder: (context, index) {
-                            bool liked = false;
-                            bool disliked = false;
+                        if (feedController.feed.length > 0) {
+                          return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: feedController.feed.length,
+                            itemBuilder: (context, index) {
+                              bool liked = false;
+                              bool disliked = false;
 
-                            // verifica se essa postagem está curtida ou descurtida
-                            for (var i = 0; i < feedController.likedDislikedPosts.length; i++) {
-                              if (feedController.feed[index].idEvaluation == feedController.likedDislikedPosts[i].idEvaluation) {
-                                if (feedController.likedDislikedPosts[i].likeDit == 1) {
-                                  liked = true;
-                                  i = feedController.likedDislikedPosts.length;
-                                } else if (feedController.likedDislikedPosts[i].likeDit == 2) {
-                                  disliked = true;
-                                  i = feedController.likedDislikedPosts.length;
+                              // verifica se essa postagem está curtida ou descurtida
+                              for (var i = 0; i < feedController.likedDislikedPosts.length; i++) {
+                                if (feedController.feed[index].idEvaluation == feedController.likedDislikedPosts[i].idEvaluation) {
+                                  if (feedController.likedDislikedPosts[i].likeDit == 1) {
+                                    liked = true;
+                                    i = feedController.likedDislikedPosts.length;
+                                  } else if (feedController.likedDislikedPosts[i].likeDit == 2) {
+                                    disliked = true;
+                                    i = feedController.likedDislikedPosts.length;
+                                  }
                                 }
                               }
-                            }
 
-                            return CardAvaliacaoWidget(
-                              feedController.feed[index],
-                              exibirUsuario: true,
-                              exibirLikes: true,
-                              curtido: liked,
-                              descurtido: disliked,
-                            );
-                          },
-                        );
-                      } else {
-                        return Container(
-                          child: Center(
-                            child: Text("Nenhuma avaliação encontrada."),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ],
+                              FeedDetails details = FeedDetails();
+                              details.feed = feedController.feed[index];
+                              details.curtido = liked;
+                              details.descurtido = disliked;
+
+                              return CardAvaliacaoWidget(
+                                details,
+                                () {
+                                  setState(() {});
+                                },
+                                exibirUsuario: true,
+                                exibirLikes: true,
+                              );
+                            },
+                          );
+                        } else {
+                          return Container(
+                            child: Center(
+                              child: Text("Nenhuma avaliação encontrada."),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

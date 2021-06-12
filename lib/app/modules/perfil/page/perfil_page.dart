@@ -1,4 +1,5 @@
 import 'package:app_games_rating/app/app_store.dart';
+import 'package:app_games_rating/app/modules/feed/model/feed_details_model.dart';
 import 'package:app_games_rating/app/modules/feed/page/listing/feed_store.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/card_avaliacao_widget.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/shadow_widget.dart';
@@ -23,9 +24,7 @@ class PerfilPageState extends State<PerfilPage> {
         elevation: 0,
         titleSpacing: 0,
         centerTitle: true,
-        title: Text(
-          "Perfil de Usuário",
-        ),
+        title: Text("Perfil de Usuário"),
       ),
       body: Container(
         child: SingleChildScrollView(
@@ -81,7 +80,35 @@ class PerfilPageState extends State<PerfilPage> {
                             shrinkWrap: true,
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
-                              return CardAvaliacaoWidget(snapshot.data[index], exibirUsuario: false, exibirLikes: false);
+                              bool liked = false;
+                              bool disliked = false;
+
+                              // verifica se essa postagem está curtida ou descurtida
+                              for (var i = 0; i < feedController.likedDislikedPosts.length; i++) {
+                                if (snapshot.data[index].idEvaluation == feedController.likedDislikedPosts[i].idEvaluation) {
+                                  if (feedController.likedDislikedPosts[i].likeDit == 1) {
+                                    liked = true;
+                                    i = feedController.likedDislikedPosts.length;
+                                  } else if (feedController.likedDislikedPosts[i].likeDit == 2) {
+                                    disliked = true;
+                                    i = feedController.likedDislikedPosts.length;
+                                  }
+                                }
+                              }
+
+                              FeedDetails details = FeedDetails();
+                              details.feed = snapshot.data[index];
+                              details.curtido = liked;
+                              details.descurtido = disliked;
+
+                              return CardAvaliacaoWidget(
+                                details,
+                                () {
+                                  setState(() {});
+                                },
+                                exibirUsuario: false,
+                                exibirLikes: false,
+                              );
                             },
                           );
                         } else {

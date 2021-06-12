@@ -22,6 +22,7 @@ abstract class _FeedStoreBase with Store {
   Future<List<Feed>> getFeed(String authToken, dynamic idUser, bool feedByUser) async {
     if (feedByUser) {
       // busca posts por usuário
+      await getLikeDislikeByUser(idUser, authToken);
       return await feedRepository.getFeed(authToken, idUser: idUser);
     } else {
       feed = await feedRepository.getFeed(authToken);
