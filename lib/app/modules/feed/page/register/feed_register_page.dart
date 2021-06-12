@@ -1,5 +1,5 @@
 import 'package:app_games_rating/app/app_store.dart';
-import 'package:app_games_rating/app/modules/feed/page/register/feed_register_store.dart';
+import 'package:app_games_rating/app/modules/feed/page/feed_store.dart';
 import 'package:app_games_rating/app/modules/jogos/model/jogo_model.dart';
 import 'package:app_games_rating/app/modules/jogos/page/jogos_store.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -14,7 +14,7 @@ class FeedRegisterPage extends StatefulWidget {
 
 class FeedRegisterPageState extends State<FeedRegisterPage> {
   final appController = Modular.get<AppStore>();
-  final feedRegisterController = Modular.get<FeedRegisterStore>();
+  final feedController = Modular.get<FeedStore>();
   final jogosController = Modular.get<JogosStore>();
 
   final _formKey = GlobalKey<FormState>();
@@ -131,8 +131,8 @@ class FeedRegisterPageState extends State<FeedRegisterPage> {
                 barrierDismissible: false,
               );
 
-              await feedRegisterController
-                  .publicarAvalicao(
+              await feedController
+                  .insertFeed(
                 avalicaoController.text,
                 jogoSelecionado,
                 appController.usuarioLogado.id,

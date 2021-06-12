@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/feed/model/feed_details_model.dart';
-import 'package:app_games_rating/app/modules/feed/page/listing/feed_store.dart';
+import 'package:app_games_rating/app/modules/feed/page/feed_store.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/shadow_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';

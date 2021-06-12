@@ -1,3 +1,4 @@
+import 'package:app_games_rating/app/modules/feed/page/edit/feed_edit_module.dart';
 import 'package:app_games_rating/app/modules/perfil/page/perfil_module.dart';
 import 'package:app_games_rating/app/modules/usuario/repository/usuario_repository.dart';
 import 'package:app_games_rating/app/modules/usuario/page/usuario_store.dart';
@@ -14,7 +15,7 @@ import 'package:app_games_rating/app/modules/usuario/helper/usuario_helper.dart'
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'app_store.dart';
-import 'modules/feed/page/listing/feed_store.dart';
+import 'modules/feed/page/feed_store.dart';
 import 'modules/feed/page/listing/feed_module.dart';
 import 'modules/feed/repository/feed_repository.dart';
 import 'modules/loading/page/loading_module.dart';
@@ -42,6 +43,7 @@ class AppModule extends Module {
     ModuleRoute('/feed', module: FeedModule()),
     ModuleRoute('/feed/details', module: FeedDetailsModule()),
     ModuleRoute('/feed/register', module: FeedRegisterModule()),
+    ModuleRoute('/feed/edit', module: FeedEditModule()),
     ModuleRoute('/jogos', module: JogosModule()),
     ModuleRoute('/profile', module: PerfilModule()),
   ];

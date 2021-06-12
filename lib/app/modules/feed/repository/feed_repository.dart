@@ -68,6 +68,33 @@ class FeedRepository {
     }
   }
 
+  Future updateFeed(int idEvaluation, String review, int idGame, int idUser, String authToken) async {
+    try {
+      String url = appController.getUrlBase() + "/evaluation/" + idEvaluation.toString();
+
+      var resultado = await http.put(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': authToken,
+        },
+        body: jsonEncode(
+          <String, String>{
+            "review": review,
+            "game": idGame.toString(),
+            "user": idUser.toString(),
+          },
+        ),
+      );
+
+      if (resultado.statusCode != 200 && resultado.statusCode != 201) {
+        throw json.decode(utf8.decode(resultado.bodyBytes))['erro'];
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<List<LikeByUser>> getLikesFromUser(int idUser, String authToken) async {
     try {
       String url = appController.getUrlBase() + "/like/user/" + idUser.toString();
@@ -113,6 +140,25 @@ class FeedRepository {
             "evaluation": idEvaluation,
           },
         ),
+      );
+
+      if (resultado.statusCode != 200 && resultado.statusCode != 201) {
+        throw json.decode(utf8.decode(resultado.bodyBytes))['erro'];
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future deleteFeed(int idEvaluation, String authToken) async {
+    try {
+      String url = appController.getUrlBase() + "/evaluation/" + idEvaluation.toString();
+
+      var resultado = await http.delete(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Authorization': authToken,
+        },
       );
 
       if (resultado.statusCode != 200 && resultado.statusCode != 201) {

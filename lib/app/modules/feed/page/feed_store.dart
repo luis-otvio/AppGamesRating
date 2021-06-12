@@ -30,6 +30,14 @@ abstract class _FeedStoreBase with Store {
     }
   }
 
+  Future<void> updateFeed(int idEvaluation, int idUser, int idGame, String review, String authToken) async {
+    try {
+      await feedRepository.updateFeed(idEvaluation, review, idGame, idUser, authToken);
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
   @action
   Future getLikeDislikeByUser(int idUser, String authToken) async {
     likedDislikedPosts = await feedRepository.getLikesFromUser(idUser, authToken);
@@ -37,5 +45,21 @@ abstract class _FeedStoreBase with Store {
 
   Future<void> likeDislikeFeed(int likeType, dynamic idUser, int idEvaluation, String authToken) async {
     await feedRepository.likeDislikeFeed(likeType, idUser, idEvaluation, authToken);
+  }
+
+  Future insertFeed(String review, int idGame, int idUser, String authToken) async {
+    try {
+      await feedRepository.insertFeed(review, idGame, idUser, authToken);
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<void> deleteFeed(int idEvaluation, String authToken) async {
+    try {
+      await feedRepository.deleteFeed(idEvaluation, authToken);
+    } catch (e) {
+      throw e.toString();
+    }
   }
 }

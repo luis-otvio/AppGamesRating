@@ -1,6 +1,6 @@
 import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/feed/model/feed_details_model.dart';
-import 'package:app_games_rating/app/modules/feed/page/listing/feed_store.dart';
+import 'package:app_games_rating/app/modules/feed/page/feed_store.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/card_avaliacao_widget.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/drawer.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/shadow_widget.dart';

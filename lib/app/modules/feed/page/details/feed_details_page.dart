@@ -1,6 +1,6 @@
 import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/feed/model/feed_details_model.dart';
-import 'package:app_games_rating/app/modules/feed/page/listing/feed_store.dart';
+import 'package:app_games_rating/app/modules/feed/page/feed_store.dart';
 import 'package:app_games_rating/app/modules/shared/widgets/shadow_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
@@ -26,10 +26,14 @@ class FeedDetailsPageState extends State<FeedDetailsPage> {
 
   bool _isEditable = false;
 
+  String avaliacao = "";
+
   @override
   void initState() {
     _isLiked = widget.feedDetails.curtido;
     _isDisliked = widget.feedDetails.descurtido;
+
+    avaliacao = widget.feedDetails.feed.evaluationUser;
 
     if (widget.feedDetails.feed.idUser == appController.usuarioLogado.id) {
       setState(() {
@@ -106,7 +110,12 @@ class FeedDetailsPageState extends State<FeedDetailsPage> {
                               Expanded(
                                 child: ElevatedButton(
                                   style: btnEditarStyle,
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    String novaAvaliacao = await Modular.to.pushNamed('/feed/edit', arguments: widget.feedDetails);
+                                    setState(() {
+                                      avaliacao = novaAvaliacao;
+                                    });
+                                  },
                                   child: Text('Editar Post'),
                                 ),
                               ),
@@ -114,7 +123,18 @@ class FeedDetailsPageState extends State<FeedDetailsPage> {
                               Expanded(
                                 child: ElevatedButton(
                                   style: btnDeletarStyle,
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    CoolAlert.show(
+                                      context: context,
+                                      type: CoolAlertType.confirm,
+                                      text: 'Deseja realmente deletar essa avaliação?',
+                                      title: 'Confirmação',
+                                      confirmBtnText: 'Sim',
+                                      cancelBtnText: 'Não',
+                                      confirmBtnColor: Colors.red,
+                                      onConfirmBtnTap: () => _deletarPost(),
+                                    );
+                                  },
                                   child: Text('Deletar Post'),
                                 ),
                               ),
@@ -138,7 +158,7 @@ class FeedDetailsPageState extends State<FeedDetailsPage> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "“" + widget.feedDetails.feed.evaluationUser + "”",
+                    "“" + avaliacao + "”",
                     textAlign: TextAlign.justify,
                   ),
                 ],
@@ -282,6 +302,7 @@ class FeedDetailsPageState extends State<FeedDetailsPage> {
       appController.usuarioLogado.accessToken,
     )
         .onError((error, stackTrace) {
+      Modular.to.pop();
       CoolAlert.show(
         context: context,
         type: CoolAlertType.error,
@@ -297,5 +318,31 @@ class FeedDetailsPageState extends State<FeedDetailsPage> {
     Modular.to.pop();
 
     return !isDisliked;
+  }
+
+  _deletarPost() async {
+    Modular.to.pop();
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.loading,
+      text: "Carregando...",
+      barrierDismissible: false,
+    );
+
+    await feedController.deleteFeed(widget.feedDetails.feed.idEvaluation, appController.usuarioLogado.accessToken).then((value) {
+      Modular.to.pushReplacementNamed('/feed');
+    }).onError((error, stackTrace) {
+      Modular.to.pop();
+      CoolAlert.show(
+        context: context,
+        type: CoolAlertType.error,
+        barrierDismissible: false,
+        title: "Ops!",
+        text: error,
+        onConfirmBtnTap: () {
+          Modular.to.pushReplacementNamed('/');
+        },
+      );
+    });
   }
 }
