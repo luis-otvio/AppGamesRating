@@ -224,7 +224,11 @@ class _FeedPageState extends State<FeedPage> {
                       ),
                     ),
                     Text(
-                      "25 publicações",
+                      feedController.quantidadePostsUsuario == 0
+                          ? "Nenhuma publicação"
+                          : feedController.quantidadePostsUsuario > 1
+                              ? feedController.quantidadePostsUsuario.toString() + ' publicações'
+                              : '1 publicação',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w300,

@@ -168,4 +168,26 @@ class FeedRepository {
       throw e;
     }
   }
+
+  Future<int> countPostsUser(int idUser, String authToken) async {
+    try {
+      String url = appController.getUrlBase() + "/evaluation/count/user/" + idUser.toString();
+
+      var resultado = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Authorization': authToken,
+        },
+      );
+
+      if (resultado.statusCode != 200) {
+        throw Exception("Erro " + resultado.statusCode.toString() + " ao buscar quantidade de posts desse usuário.");
+      } else {
+        var countJson = json.decode(utf8.decode(resultado.bodyBytes));
+        return countJson['totalEvaluation'];
+      }
+    } catch (e) {
+      throw Exception("Não foi possível comunicar com o servidor. " + e.toString());
+    }
+  }
 }

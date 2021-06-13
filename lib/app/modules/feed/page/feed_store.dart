@@ -17,6 +17,9 @@ abstract class _FeedStoreBase with Store {
   @observable
   List<LikeByUser> likedDislikedPosts = <LikeByUser>[];
 
+  @observable
+  int quantidadePostsUsuario = 0;
+
   @action
   // ignore: missing_return
   Future<List<Feed>> getFeed(String authToken, dynamic idUser, bool feedByUser) async {
@@ -26,6 +29,7 @@ abstract class _FeedStoreBase with Store {
       return await feedRepository.getFeed(authToken, idUser: idUser);
     } else {
       feed = await feedRepository.getFeed(authToken);
+      quantidadePostsUsuario = await feedRepository.countPostsUser(idUser, authToken);
       await getLikeDislikeByUser(idUser, authToken);
     }
   }

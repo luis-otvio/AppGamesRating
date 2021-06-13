@@ -27,16 +27,16 @@ Drawer myDrawer(BuildContext context) {
         ),
         ListTile(
           leading: Icon(Icons.gamepad_outlined),
-          title: Text('Jogos'),
+          title: Text('Jogos Disponíveis'),
           onTap: () => Modular.to.pushNamed('/jogos'),
         ),
-        ListTile(
-          leading: Icon(Icons.bar_chart),
-          title: Text('Ranking'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
+        // ListTile(
+        //   leading: Icon(Icons.bar_chart),
+        //   title: Text('Ranking'),
+        //   onTap: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
         ListTile(
           leading: Icon(Icons.exit_to_app),
           title: Text('Sair'),
