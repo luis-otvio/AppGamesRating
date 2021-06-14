@@ -74,4 +74,8 @@ abstract class _LoginStoreBase with Store {
       );
     });
   }
+
+  Future<String> refreshToken(String currentToken) async {
+    return await loginRepository.refreshToken(currentToken);
+  }
 }

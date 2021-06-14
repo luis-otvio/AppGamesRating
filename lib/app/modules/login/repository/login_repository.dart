@@ -76,4 +76,27 @@ class LoginRepository {
         break;
     }
   }
+
+  Future<String> refreshToken(String currentToken) async {
+    try {
+      String url = appController.getUrlBase() + "/auth/refresh_token";
+
+      var resultado = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Authorization': currentToken,
+        },
+      );
+
+      String novoToken = resultado.headers['authorization'];
+
+      if (resultado.statusCode != 200 && resultado.statusCode != 201 && resultado.statusCode != 204) {
+        throw json.decode(resultado.body)['message'];
+      } else {
+        return novoToken;
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
 }

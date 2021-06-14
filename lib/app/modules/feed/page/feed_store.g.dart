@@ -40,6 +40,23 @@ mixin _$FeedStore on _FeedStoreBase, Store {
     });
   }
 
+  final _$quantidadePostsUsuarioAtom =
+      Atom(name: '_FeedStoreBase.quantidadePostsUsuario');
+
+  @override
+  int get quantidadePostsUsuario {
+    _$quantidadePostsUsuarioAtom.reportRead();
+    return super.quantidadePostsUsuario;
+  }
+
+  @override
+  set quantidadePostsUsuario(int value) {
+    _$quantidadePostsUsuarioAtom
+        .reportWrite(value, super.quantidadePostsUsuario, () {
+      super.quantidadePostsUsuario = value;
+    });
+  }
+
   final _$getFeedAsyncAction = AsyncAction('_FeedStoreBase.getFeed');
 
   @override
@@ -62,7 +79,8 @@ mixin _$FeedStore on _FeedStoreBase, Store {
   String toString() {
     return '''
 feed: ${feed},
-likedDislikedPosts: ${likedDislikedPosts}
+likedDislikedPosts: ${likedDislikedPosts},
+quantidadePostsUsuario: ${quantidadePostsUsuario}
     ''';
   }
 }

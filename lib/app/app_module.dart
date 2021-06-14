@@ -1,4 +1,5 @@
 import 'package:app_games_rating/app/modules/feed/page/edit/feed_edit_module.dart';
+import 'package:app_games_rating/app/modules/login/page/login_store.dart';
 import 'package:app_games_rating/app/modules/perfil/page/perfil_module.dart';
 import 'package:app_games_rating/app/modules/usuario/repository/usuario_repository.dart';
 import 'package:app_games_rating/app/modules/usuario/page/usuario_store.dart';
@@ -26,6 +27,7 @@ class AppModule extends Module {
     Bind.lazySingleton((i) => UsuarioRepository()),
     Bind.lazySingleton((i) => UsuarioStore()),
     Bind.lazySingleton((i) => UsuarioHelper()),
+    Bind.lazySingleton((i) => LoginStore()),
     Bind.lazySingleton((i) => LoginRepository()),
     Bind.lazySingleton((i) => JogosStore()),
     Bind.lazySingleton((i) => JogosRepository()),
