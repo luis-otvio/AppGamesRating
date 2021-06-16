@@ -17,7 +17,7 @@ abstract class _AppStoreBase with Store {
   final String urlDev = "https://games-rating-api-dev.herokuapp.com";
   final String urlProd = "https://games-rating-api-prod.herokuapp.com";
 
-  String devMode = "dev";
+  String devMode = "prod";
 
   String getUrlBase() {
     return devMode == "dev" ? urlDev : urlProd;

@@ -99,4 +99,31 @@ class LoginRepository {
       throw e;
     }
   }
+
+  Future forgotPassword(String email) async {
+    try {
+      String url = appController.getUrlBase() + "/auth/forgot";
+
+      var resultado = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, String>{
+            "email": email,
+          },
+        ),
+      );
+
+      if (resultado.statusCode != 200 && resultado.statusCode != 201 && resultado.statusCode != 204) {
+        if (resultado.statusCode == 400) {
+          throw json.decode(utf8.decode(resultado.bodyBytes))['message'][0];
+        }
+        throw json.decode(utf8.decode(resultado.bodyBytes))['erro'];
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
 }

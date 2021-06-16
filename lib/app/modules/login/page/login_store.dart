@@ -39,6 +39,14 @@ abstract class _LoginStoreBase with Store {
     }
   }
 
+  Future forgotPassword(String email) async {
+    try {
+      await loginRepository.forgotPassword(email);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   entrar(String email, String senha, BuildContext context) async {
     await login(email, senha).then((value) async {
       await _db.deleteAllUsuario();

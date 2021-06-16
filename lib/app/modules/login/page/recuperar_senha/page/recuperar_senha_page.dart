@@ -1,4 +1,7 @@
+import 'package:app_games_rating/app/modules/login/page/login_store.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class RecuperarSenhaPage extends StatefulWidget {
   @override
@@ -6,6 +9,7 @@ class RecuperarSenhaPage extends StatefulWidget {
 }
 
 class RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
+  final loginController = Modular.get<LoginStore>();
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
 
@@ -81,7 +85,45 @@ class RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
                           return null; // Defer to the widget's default.
                         }),
                       ),
-                      onPressed: null,
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+
+                          CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.loading,
+                            text: "Carregando...",
+                            barrierDismissible: false,
+                          );
+
+                          await loginController.forgotPassword(_emailController.text).then((value) {
+                            Modular.to.pop();
+                            CoolAlert.show(
+                              context: context,
+                              type: CoolAlertType.success,
+                              barrierDismissible: false,
+                              title: "Sucesso",
+                              text: "Enviamos uma recuperação de senha para seu e-mail.",
+                              onConfirmBtnTap: () {
+                                Modular.to.pop();
+                                Modular.to.pop();
+                              },
+                            );
+                          }).onError((error, stackTrace) {
+                            Modular.to.pop();
+                            CoolAlert.show(
+                              context: context,
+                              type: CoolAlertType.info,
+                              barrierDismissible: false,
+                              title: "Ops!",
+                              text: error.toString(),
+                              onConfirmBtnTap: () {
+                                Modular.to.pop();
+                              },
+                            );
+                          });
+                        }
+                      },
                       child: Text('Recuperar'),
                     ),
                   ),
