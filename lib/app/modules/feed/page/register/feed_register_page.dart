@@ -1,7 +1,7 @@
 import 'package:app_games_rating/app/app_store.dart';
 import 'package:app_games_rating/app/modules/feed/page/feed_store.dart';
 import 'package:app_games_rating/app/modules/jogos/model/jogo_model.dart';
-import 'package:app_games_rating/app/modules/jogos/page/jogos_store.dart';
+import 'package:app_games_rating/app/modules/jogos/page/listing/jogos_store.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';

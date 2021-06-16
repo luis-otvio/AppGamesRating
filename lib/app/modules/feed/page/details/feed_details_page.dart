@@ -179,66 +179,46 @@ class FeedDetailsPageState extends State<FeedDetailsPage> {
         ),
         padding: EdgeInsets.all(20.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                LikeButton(
-                  key: _likeKey,
-                  isLiked: _isLiked,
-                  circleColor: CircleColor(start: Color(0xFFFF879B), end: Color(0xFFFF5656)),
-                  bubblesColor: BubblesColor(dotPrimaryColor: Color(0xFFFF879B), dotSecondaryColor: Color(0xFFFF5656)),
-                  likeBuilder: (bool isLiked) {
-                    return Icon(
-                      isLiked ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
-                      color: isLiked ? Colors.redAccent : Colors.grey,
-                    );
-                  },
-                  likeCount: widget.feedDetails.feed.like,
-                  countBuilder: (int count, bool isLiked, String text) {
-                    var color = isLiked ? Colors.redAccent : Colors.grey;
-                    Widget result = Text(text, style: TextStyle(color: color));
-                    return result;
-                  },
-                  onTap: (bool isLiked) async => onLikeButtonTapped(isLiked, widget.feedDetails.feed.idEvaluation),
-                ),
-                SizedBox(width: 10),
-                LikeButton(
-                  key: _dislikeKey,
-                  isLiked: _isDisliked,
-                  circleColor: CircleColor(start: Color(0xFFFF879B), end: Color(0xFFFF5656)),
-                  bubblesColor: BubblesColor(dotPrimaryColor: Color(0xFFFF879B), dotSecondaryColor: Color(0xFFFF5656)),
-                  likeBuilder: (bool isDisliked) {
-                    return Icon(
-                      isDisliked ? Icons.thumb_down : Icons.thumb_down_alt_outlined,
-                      color: isDisliked ? Colors.redAccent : Colors.grey,
-                    );
-                  },
-                  likeCount: widget.feedDetails.feed.dislike,
-                  countBuilder: (int count, bool isDisliked, String text) {
-                    var color = isDisliked ? Colors.redAccent : Colors.grey;
-                    Widget result = Text(text, style: TextStyle(color: color));
-                    return result;
-                  },
-                  onTap: (bool isDisliked) async => onDislikeButtonTapped(isDisliked, widget.feedDetails.feed.idEvaluation),
-                ),
-              ],
+            LikeButton(
+              key: _likeKey,
+              isLiked: _isLiked,
+              circleColor: CircleColor(start: Color(0xFFFF879B), end: Color(0xFFFF5656)),
+              bubblesColor: BubblesColor(dotPrimaryColor: Color(0xFFFF879B), dotSecondaryColor: Color(0xFFFF5656)),
+              likeBuilder: (bool isLiked) {
+                return Icon(
+                  isLiked ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
+                  color: isLiked ? Colors.redAccent : Colors.grey,
+                );
+              },
+              likeCount: widget.feedDetails.feed.like,
+              countBuilder: (int count, bool isLiked, String text) {
+                var color = isLiked ? Colors.redAccent : Colors.grey;
+                Widget result = Text(text, style: TextStyle(color: color));
+                return result;
+              },
+              onTap: (bool isLiked) async => onLikeButtonTapped(isLiked, widget.feedDetails.feed.idEvaluation),
             ),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () {},
-                  child: Icon(Icons.comment_rounded),
-                ),
-                SizedBox(width: 5),
-                Text(
-                  widget.feedDetails.feed.like.toString() + " comentários",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            SizedBox(width: 10),
+            LikeButton(
+              key: _dislikeKey,
+              isLiked: _isDisliked,
+              circleColor: CircleColor(start: Color(0xFFFF879B), end: Color(0xFFFF5656)),
+              bubblesColor: BubblesColor(dotPrimaryColor: Color(0xFFFF879B), dotSecondaryColor: Color(0xFFFF5656)),
+              likeBuilder: (bool isDisliked) {
+                return Icon(
+                  isDisliked ? Icons.thumb_down : Icons.thumb_down_alt_outlined,
+                  color: isDisliked ? Colors.redAccent : Colors.grey,
+                );
+              },
+              likeCount: widget.feedDetails.feed.dislike,
+              countBuilder: (int count, bool isDisliked, String text) {
+                var color = isDisliked ? Colors.redAccent : Colors.grey;
+                Widget result = Text(text, style: TextStyle(color: color));
+                return result;
+              },
+              onTap: (bool isDisliked) async => onDislikeButtonTapped(isDisliked, widget.feedDetails.feed.idEvaluation),
             ),
           ],
         ),

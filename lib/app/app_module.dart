@@ -1,11 +1,12 @@
 import 'package:app_games_rating/app/modules/feed/page/edit/feed_edit_module.dart';
+import 'package:app_games_rating/app/modules/jogos/page/details/jogos_details_module.dart';
 import 'package:app_games_rating/app/modules/login/page/login_store.dart';
 import 'package:app_games_rating/app/modules/perfil/page/perfil_module.dart';
 import 'package:app_games_rating/app/modules/usuario/repository/usuario_repository.dart';
 import 'package:app_games_rating/app/modules/usuario/page/usuario_store.dart';
 import 'package:app_games_rating/app/modules/login/repository/login_repository.dart';
-import 'package:app_games_rating/app/modules/jogos/page/jogos_module.dart';
-import 'package:app_games_rating/app/modules/jogos/page/jogos_store.dart';
+import 'package:app_games_rating/app/modules/jogos/page/listing/jogos_module.dart';
+import 'package:app_games_rating/app/modules/jogos/page/listing/jogos_store.dart';
 import 'package:app_games_rating/app/modules/jogos/repository/jogos_repository.dart';
 import 'package:app_games_rating/app/modules/feed/page/details/feed_details_module.dart';
 import 'package:app_games_rating/app/modules/feed/page/register/feed_register_module.dart';
@@ -47,6 +48,7 @@ class AppModule extends Module {
     ModuleRoute('/feed/register', module: FeedRegisterModule()),
     ModuleRoute('/feed/edit', module: FeedEditModule()),
     ModuleRoute('/jogos', module: JogosModule()),
+    ModuleRoute('/jogos/details', module: JogosDetailsModule()),
     ModuleRoute('/profile', module: PerfilModule()),
   ];
 }

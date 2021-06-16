@@ -1,5 +1,5 @@
 import 'package:app_games_rating/app/modules/jogos/model/jogo_model.dart';
-import 'package:app_games_rating/app/modules/jogos/page/jogos_store.dart';
+import 'package:app_games_rating/app/modules/jogos/page/listing/jogos_store.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -102,6 +102,7 @@ class JogosPageState extends State<JogosPage> {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
+                            onTap: () => Modular.to.pushNamed('/jogos/details', arguments: jogo),
                           );
                         },
                       );
